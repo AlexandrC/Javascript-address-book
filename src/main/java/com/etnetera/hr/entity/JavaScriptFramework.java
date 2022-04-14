@@ -1,4 +1,4 @@
-package com.etnetera.hr.data;
+package com.etnetera.hr.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
