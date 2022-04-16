@@ -8,15 +8,22 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.http.HttpStatus;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@DisplayName("Javascript service tests")
 public class JavaScriptServiceTest {
 
     @Mock
@@ -33,47 +40,52 @@ public class JavaScriptServiceTest {
     }
 
 
-    @Test
-   public void itShouldSaveJavaScriptFramework(){
-        // Given
-        Date expectedDate = new Date();
-        JsFrameworkDTO expectedjsFrameworkDTO = new JsFrameworkDTO("Angular",
-                "10.1",
-                expectedDate,
-                1);
-        JsFrameworkEntity mockEntity = new JsFrameworkEntity(1L,"Angular",
-                "10.1",expectedDate,1);
-        // When
-        Mockito.when(repository.save(Mockito.any())).thenReturn(mockEntity);
-        var actualJsFrameworkDTO=underTest.createFramework(expectedjsFrameworkDTO);
 
-        // Then
-        assertAll(
-                ()-> assertEquals(expectedjsFrameworkDTO.getName(),actualJsFrameworkDTO.getName()),
+        @Test
+        @DisplayName("Should save javascript framework")
+        public void itShouldSaveJavaScriptFramework(){
+            // Given
+            Date expectedDate = new Date();
+            JsFrameworkDTO expectedjsFrameworkDTO = new JsFrameworkDTO("Angular",
+                    "10.1",
+                    expectedDate,
+                    1);
+            JsFrameworkEntity mockEntity = new JsFrameworkEntity(1L,"Angular",
+                    "10.1",expectedDate,1);
+            // When
+            Mockito.when(repository.save(Mockito.any())).thenReturn(mockEntity);
+            var actualJsFrameworkDTO=underTest.createFramework(expectedjsFrameworkDTO);
+
+            // Then
+            assertAll(
+                    ()-> assertEquals(expectedjsFrameworkDTO.getName(),actualJsFrameworkDTO.getName()),
                     ()-> assertEquals(expectedjsFrameworkDTO.getVersion(),actualJsFrameworkDTO.getVersion()),
-                ()-> assertEquals(expectedjsFrameworkDTO.getDate(),actualJsFrameworkDTO.getDate()),
-                ()-> assertEquals(expectedjsFrameworkDTO.getHypeLevel(),actualJsFrameworkDTO.getHypeLevel())
-        );
+                    ()-> assertEquals(expectedjsFrameworkDTO.getDate(),actualJsFrameworkDTO.getDate()),
+                    ()-> assertEquals(expectedjsFrameworkDTO.getHypeLevel(),actualJsFrameworkDTO.getHypeLevel())
+            );
 
-    }
+        }
 
-    @Test
-    public void itShouldFindDuplicate(){
+        @Test
+        public void itShouldThrowDuplicateExceptionWhenSaveFramework(){
 
-        Date expectedDate = new Date();
-        JsFrameworkDTO jsFrameworkDTO = new JsFrameworkDTO("Angular",
-                "10.1",
-                expectedDate,
-                1);
-        JsFrameworkEntity expectedEntity = new JsFrameworkEntity(1L,"Angular",
-                "10.1",expectedDate,3);
-        // When
-        Mockito.when(repository.findFirstByNameAndVersion(jsFrameworkDTO.getName(), jsFrameworkDTO.getVersion())).thenReturn(expectedEntity);
+            Date expectedDate = new Date();
+            JsFrameworkDTO jsFrameworkDTO = new JsFrameworkDTO("Angular",
+                    "10.1",
+                    expectedDate,
+                    1);
+            JsFrameworkEntity expectedEntity = new JsFrameworkEntity(1L,"Angular",
+                    "10.1",expectedDate,3);
+            // When
+            Mockito.when(repository.findFirstByNameAndVersion(jsFrameworkDTO.getName(), jsFrameworkDTO.getVersion())).thenReturn(expectedEntity);
 
-        // Then
-        assertThrows(JSDuplicate.class, () -> underTest.createFramework(jsFrameworkDTO),
-                "Javascript framework with the same name and version already exist");
-    }
+            // Then
+            assertThrows(JSDuplicate.class, () -> underTest.createFramework(jsFrameworkDTO),
+                    "Javascript framework with the same name and version already exist");
+        }
+
+//    }
+
 
     @Test
     public void itShouldUpdateFw() {
@@ -98,6 +110,30 @@ public class JavaScriptServiceTest {
     }
 
     @Test
+    public void itShouldThrowRuntimeExceptionWhenUpdateFw() {
+        // Given
+        String expectedMessage = "Javascript framework was not found";
+        JsFrameworkDTO mockJsFrameworkDTO = new JsFrameworkDTO();
+        Long mockId=null;
+        // When
+        // Then
+         RuntimeException exception = assertThrows(RuntimeException.class, () -> underTest.updateFrameworkById(mockJsFrameworkDTO,mockId));
+
+         assertEquals(expectedMessage,exception.getMessage());
+    }
+    @Test
+    public void itShouldThrowRuntimeExceptionWhenGetFwByID() {
+        // Given
+        String expectedMessage = "Javascript framework was not found";
+        Long mockId=null;
+        // When
+        // Then
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> underTest.getFrameworkById(mockId));
+
+        assertEquals(expectedMessage,exception.getMessage());
+    }
+
+    @Test
     public void itShouldDeleteFw() {
         // Given
         HttpStatus expectedStatus = HttpStatus.OK;
@@ -111,5 +147,53 @@ public class JavaScriptServiceTest {
         var actualHTPSStatus= underTest.deleteFrameworkById(mockEntity.getId());
         // Then
         assertEquals(actualHTPSStatus,expectedStatus);
+    }
+
+    @Test
+    public void itShouldFindAllNetworks() {
+        // Given
+        JsFrameworkEntity mockEntity = new JsFrameworkEntity(1L,
+                "Angular",
+                "10.1",
+                new Date(),
+                2);
+        JsFrameworkEntity mockEntity2 = new JsFrameworkEntity(1L,
+                "Angular",
+                "10.6",
+                new Date(),
+                4);
+        // When
+        List<JsFrameworkEntity> entities = new ArrayList<>();
+        entities.add(mockEntity);
+        entities.add(mockEntity2);
+        Mockito.when(repository.findAll()).thenReturn(entities);
+        // Then
+        assertEquals(underTest.getAllFrameworks().size(), 2);
+    }
+
+    @Test
+    public void itShouldFindFrameworksByName() {
+        // Given
+        String searchName = "Angular";
+        JsFrameworkEntity mockEntity = new JsFrameworkEntity(1L,
+                "Angular",
+                "10.1",
+                new Date(),
+                2);
+        JsFrameworkEntity mockEntity2 = new JsFrameworkEntity(1L,
+                "Angular",
+                "10.6",
+                new Date(),
+                4);
+        List<JsFrameworkEntity> entities = new ArrayList<>();
+        entities.add(mockEntity);
+        entities.add(mockEntity2);
+        ModelMapper modelMapper = new ModelMapper();
+       List<JsFrameworkDTO> expectedJsDTO = modelMapper.map(entities,new TypeToken<Iterable<JsFrameworkDTO>>() {}.getType());
+        // When
+        Mockito.when(repository.findAllByName(searchName)).thenReturn(entities);
+        var actual = underTest.getFrameworkByName(searchName);
+        // Then
+        assertArrayEquals(expectedJsDTO.toArray(),actual.toArray());
     }
 }

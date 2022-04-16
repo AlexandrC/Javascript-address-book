@@ -5,10 +5,12 @@ import com.etnetera.hr.entity.JsFrameworkEntity;
 import com.etnetera.hr.exceptions.JSDuplicate;
 import com.etnetera.hr.repository.JavaScriptFrameworkRepository;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -36,8 +38,30 @@ public class JavaScriptService {
         }
     }
 
+    public JsFrameworkDTO getFrameworkById(Long id) {
+
+        var jsFrameworkEntity = repository.findById(id).orElseThrow(() -> new RuntimeException("Javascript framework was not found"));
+        ModelMapper modelMapper = new ModelMapper();
+        return modelMapper.map(jsFrameworkEntity, JsFrameworkDTO.class);
+
+    }
+
+    public List<JsFrameworkDTO> getFrameworkByName(String name) {
+        var jsFrameworkEntities = repository.findAllByName(name);
+        ModelMapper modelMapper = new ModelMapper();
+        return modelMapper.map(jsFrameworkEntities, new TypeToken<Iterable<JsFrameworkDTO>>() {
+        }.getType());
+    }
+
+    public List<JsFrameworkDTO> getAllFrameworks() {
+        ModelMapper modelMapper = new ModelMapper();
+        Iterable<JsFrameworkEntity> entities = repository.findAll();
+        return modelMapper.map(entities, new TypeToken<Iterable<JsFrameworkDTO>>() {
+        }.getType());
+    }
+
     public JsFrameworkDTO updateFrameworkById(JsFrameworkDTO jsFrameworkDTO, Long JsFwId) {
-        JsFrameworkEntity jsFrameworkEntity = repository.findById(JsFwId).orElseThrow(() -> new RuntimeException("Machine with specified machine Id was not found"));
+        JsFrameworkEntity jsFrameworkEntity = repository.findById(JsFwId).orElseThrow(() -> new RuntimeException("Javascript framework was not found"));
         jsFrameworkEntity.setName(jsFrameworkDTO.getName());
         jsFrameworkEntity.setDate(jsFrameworkDTO.getDate());
         jsFrameworkEntity.setVersion(jsFrameworkDTO.getVersion());

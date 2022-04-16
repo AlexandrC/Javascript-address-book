@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import com.etnetera.hr.entity.JsFrameworkEntity;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * Simple REST controller for accessing application logic.
@@ -30,10 +31,19 @@ public class JavaScriptFrameworkController {
 		this.service = service;
 	}
 
-	@GetMapping()
-	public Iterable<JsFrameworkEntity> frameworks() {
-		//return repository.findAll();
-		return null;
+	@GetMapping("/all")
+	public Iterable<JsFrameworkDTO> frameworks() {
+		return service.getAllFrameworks();
+	}
+
+	@GetMapping("/getById/{id}")
+	public ResponseEntity<JsFrameworkDTO> getFrameworkById(@PathVariable("id") Long id){
+		return new ResponseEntity<>(service.getFrameworkById(id), HttpStatus.ACCEPTED);
+	}
+
+	@GetMapping("/getByName/{name}")
+	public List<JsFrameworkDTO> getFrameworkByName(@PathVariable("name") String name){
+		return service.getFrameworkByName(name);
 	}
 
 	@PostMapping("/save")

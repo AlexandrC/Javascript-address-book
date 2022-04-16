@@ -4,6 +4,8 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.etnetera.hr.entity.JsFrameworkEntity;
 
+import java.util.List;
+
 /**
  * Spring data repository interface used for accessing the data in database.
  * 
@@ -14,5 +16,7 @@ public interface JavaScriptFrameworkRepository extends CrudRepository<JsFramewor
 
 
     JsFrameworkEntity findFirstByNameAndVersion(String Name, String version);
+
+    List<JsFrameworkEntity> findAllByName(String Name);
 
 }
