@@ -15,6 +15,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
@@ -26,17 +27,20 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisplayName("Javascript service tests")
 public class JavaScriptServiceTest {
 
+
     @Mock
     JavaScriptFrameworkRepository repository;
     private  JavaScriptService underTest;
+    private ModelMapper modelMapper;
 
 
 
     @Before
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
          underTest = new JavaScriptService(repository);
+         modelMapper = new ModelMapper();
     }
 
 
@@ -188,7 +192,7 @@ public class JavaScriptServiceTest {
         List<JsFrameworkEntity> entities = new ArrayList<>();
         entities.add(mockEntity);
         entities.add(mockEntity2);
-        ModelMapper modelMapper = new ModelMapper();
+
        List<JsFrameworkDTO> expectedJsDTO = modelMapper.map(entities,new TypeToken<Iterable<JsFrameworkDTO>>() {}.getType());
         // When
         Mockito.when(repository.findAllByName(searchName)).thenReturn(entities);
