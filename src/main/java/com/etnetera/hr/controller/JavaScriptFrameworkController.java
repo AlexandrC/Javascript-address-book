@@ -46,6 +46,11 @@ public class JavaScriptFrameworkController {
 			return service.updateFrameworkById(jsFrameworkDTO,JsFwId);
 	}
 
+	@DeleteMapping("/delete/{JsFwId}")
+	public HttpStatus deleteFramework(@PathVariable("JsFwId") Long jsFwId){
+		return service.deleteFrameworkById(jsFwId);
+	}
+
 
 
 }

@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
 
 import java.util.Date;
 
@@ -79,8 +80,11 @@ public class JavaScriptServiceTest {
         // Given
         Date expectedDate = new Date();
         JsFrameworkDTO expectedJsFrameworkDTO = new JsFrameworkDTO("updateName","10.5",expectedDate,5);
-        JsFrameworkEntity mockEntity = new JsFrameworkEntity(1L,"Angular",
-                "10.1",expectedDate,2);
+        JsFrameworkEntity mockEntity = new JsFrameworkEntity(1L,
+                "Angular",
+                "10.1",
+                expectedDate,
+                2);
         // When
         Mockito.when(repository.findById(mockEntity.getId())).thenReturn(java.util.Optional.of(mockEntity));
         var actualJsDTO= underTest.updateFrameworkById(expectedJsFrameworkDTO,mockEntity.getId());
@@ -93,4 +97,19 @@ public class JavaScriptServiceTest {
         );
     }
 
+    @Test
+    public void itShouldDeleteFw() {
+        // Given
+        HttpStatus expectedStatus = HttpStatus.OK;
+        JsFrameworkEntity mockEntity = new JsFrameworkEntity(1L,
+                "Angular",
+                "10.1",
+                new Date(),
+                2);
+        // When
+        Mockito.when(repository.findById(mockEntity.getId())).thenReturn(java.util.Optional.of(mockEntity));
+        var actualHTPSStatus= underTest.deleteFrameworkById(mockEntity.getId());
+        // Then
+        assertEquals(actualHTPSStatus,expectedStatus);
+    }
 }
