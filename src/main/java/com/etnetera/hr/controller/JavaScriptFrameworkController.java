@@ -1,13 +1,13 @@
 package com.etnetera.hr.controller;
 
-import com.etnetera.hr.dto.JsInfoDTO;
+import com.etnetera.hr.dto.JsFrameworkDTO;
 import com.etnetera.hr.service.JavaScriptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.etnetera.hr.entity.JavaScriptFrameworkEntity;
+import com.etnetera.hr.entity.JsFrameworkEntity;
 
 import javax.validation.Valid;
 
@@ -19,6 +19,7 @@ import javax.validation.Valid;
  */
 @RestController
 @CrossOrigin(origins = "*")
+@RequestMapping("/jsframework")
 public class JavaScriptFrameworkController {
 
 
@@ -29,15 +30,22 @@ public class JavaScriptFrameworkController {
 		this.service = service;
 	}
 
-	@GetMapping("/frameworks")
-	public Iterable<JavaScriptFrameworkEntity> frameworks() {
+	@GetMapping()
+	public Iterable<JsFrameworkEntity> frameworks() {
 		//return repository.findAll();
 		return null;
 	}
 
-	@PostMapping("/framework/save")
-	public ResponseEntity<JavaScriptFrameworkEntity> saveFramework(@Valid  @RequestBody JsInfoDTO jsInfoDTO){
-		return new ResponseEntity (service.createFramework(jsInfoDTO), HttpStatus.ACCEPTED);
+	@PostMapping("/save")
+	public ResponseEntity<JsFrameworkDTO> saveFramework(@Valid  @RequestBody JsFrameworkDTO jsFrameworkDTO){
+		return new ResponseEntity<>(service.createFramework(jsFrameworkDTO), HttpStatus.ACCEPTED);
 	}
+
+	@PutMapping("/update/{JsFwId}")
+	public JsFrameworkDTO updateFramework(@PathVariable("JsFwId") Long JsFwId, @RequestBody JsFrameworkDTO jsFrameworkDTO){
+			return service.updateFrameworkById(jsFrameworkDTO,JsFwId);
+	}
+
+
 
 }
