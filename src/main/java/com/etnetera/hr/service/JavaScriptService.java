@@ -1,17 +1,21 @@
 package com.etnetera.hr.service;
 
-import com.etnetera.hr.dto.JsInfoDTO;
-import com.etnetera.hr.entity.JavaScriptFrameworkEntity;
+import com.etnetera.hr.dto.JsFrameworkDTO;
+import com.etnetera.hr.entity.JsFrameworkEntity;
 import com.etnetera.hr.exceptions.JSDuplicate;
 import com.etnetera.hr.repository.JavaScriptFrameworkRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class JavaScriptService {
 
     public final JavaScriptFrameworkRepository repository;
+
 
     @Autowired
     public JavaScriptService(JavaScriptFrameworkRepository repository) {
@@ -19,19 +23,38 @@ public class JavaScriptService {
     }
 
 
-    public JavaScriptFrameworkEntity createFramework(JsInfoDTO jsInfoDTO) throws JSDuplicate{
+    public JsFrameworkDTO createFramework(JsFrameworkDTO jsFrameworkDTO) throws JSDuplicate {
         ModelMapper modelMapper = new ModelMapper();
-        JavaScriptFrameworkEntity jsEntity = modelMapper.map(jsInfoDTO, JavaScriptFrameworkEntity.class);
-        var collect = repository.findFirstByNameAndVersion(jsEntity.getName(),jsEntity.getVersion());
-        if (collect == null){
+        JsFrameworkEntity jsEntity = modelMapper.map(jsFrameworkDTO, JsFrameworkEntity.class);
+        var collect = repository.findFirstByNameAndVersion(jsEntity.getName(), jsEntity.getVersion());
+        if (collect == null) {
             var returnEntity = repository.save(jsEntity);
-            return returnEntity;
-        }
-        else {
+            return modelMapper.map(returnEntity, JsFrameworkDTO.class);
+        } else {
 
             throw new JSDuplicate("Javascript framework with the same name and version already exist");
         }
-
-
     }
+
+    public JsFrameworkDTO updateFrameworkById(JsFrameworkDTO jsFrameworkDTO, Long JsFwId) {
+        JsFrameworkEntity jsFrameworkEntity = repository.findById(JsFwId).orElseThrow(() -> new RuntimeException("Machine with specified machine Id was not found"));
+        jsFrameworkEntity.setName(jsFrameworkDTO.getName());
+        jsFrameworkEntity.setDate(jsFrameworkDTO.getDate());
+        jsFrameworkEntity.setVersion(jsFrameworkDTO.getVersion());
+        jsFrameworkEntity.setHypeLevel(jsFrameworkDTO.getHypeLevel());
+        repository.save(jsFrameworkEntity);
+        ModelMapper modelMapper = new ModelMapper();
+        return modelMapper.map(jsFrameworkEntity, JsFrameworkDTO.class);
+    }
+
+    public HttpStatus deleteFrameworkById(Long id) {
+        Optional<JsFrameworkEntity> jsFrameworkEntity = repository.findById(id);
+        if (jsFrameworkEntity.isPresent()) {
+            repository.deleteById(id);
+            return HttpStatus.OK;
+        }
+        return HttpStatus.NOT_FOUND;
+    }
+
+
 }

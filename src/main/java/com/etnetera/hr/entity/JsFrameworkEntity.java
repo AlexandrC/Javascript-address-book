@@ -22,7 +22,7 @@ import java.util.Date;
 @Setter
 @Table(name = "JAVASCRITPFRAMEWORK")
 @NoArgsConstructor @AllArgsConstructor
-public class JavaScriptFrameworkEntity {
+public class JsFrameworkEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,6 +37,9 @@ public class JavaScriptFrameworkEntity {
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 	@Column()
 	private Date date;
+
+	@Column
+	private Integer hypeLevel;
 
 
 	@Override

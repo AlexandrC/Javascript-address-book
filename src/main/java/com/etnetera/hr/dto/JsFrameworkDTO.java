@@ -8,7 +8,7 @@ import java.util.Date;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class JsInfoDTO {
+public class JsFrameworkDTO {
 
     private String name;
     private String version;
