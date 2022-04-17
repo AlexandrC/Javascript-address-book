@@ -1,21 +1,19 @@
 package com.etnetera.hr.service;
 
+import com.etnetera.hr.config.SingletonModelMapper;
 import com.etnetera.hr.dto.JsFrameworkDTO;
 import com.etnetera.hr.entity.JsFrameworkEntity;
 import com.etnetera.hr.exceptions.JSDuplicate;
 import com.etnetera.hr.repository.JavaScriptFrameworkRepository;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
@@ -23,7 +21,6 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 @DisplayName("Javascript service tests")
 public class JavaScriptServiceTest {
 
@@ -152,9 +149,22 @@ public class JavaScriptServiceTest {
         // Then
         assertEquals(actualHTPSStatus,expectedStatus);
     }
+    @Test
+    public void itShouldReturnNotFoundWhenDeleteFw() {
+        // Given
+
+        // When
+
+        var expectedStatus = HttpStatus.NOT_FOUND;
+        var actualHTPSStatus= underTest.deleteFrameworkById(1L);
+        // Then
+        assertEquals(actualHTPSStatus,expectedStatus);
+    }
+
+
 
     @Test
-    public void itShouldFindAllNetworks() {
+    public void itShouldFindAllFrameworks() {
         // Given
         JsFrameworkEntity mockEntity = new JsFrameworkEntity(1L,
                 "Angular",
@@ -199,5 +209,26 @@ public class JavaScriptServiceTest {
         var actual = underTest.getFrameworkByName(searchName);
         // Then
         assertArrayEquals(expectedJsDTO.toArray(),actual.toArray());
+    }
+    @Test
+    public void itShouldTestSingletonMethodMapper() {
+        // Given
+        String searchName = "Angular";
+        JsFrameworkEntity mockEntity = new JsFrameworkEntity(1L,
+                "Angular",
+                "10.1",
+                new Date(),
+                2);
+        // When
+        Mockito.when(repository.findById(mockEntity.getId())).thenReturn(java.util.Optional.of(mockEntity));
+        var actual = underTest.getFrameworkById(mockEntity.getId());
+        var expected = modelMapper.map(mockEntity,JsFrameworkDTO.class);
+        // Then
+        assertAll(
+                ()-> assertEquals(expected.getName(),actual.getName()),
+                ()-> assertEquals(expected.getVersion(),actual.getVersion()),
+                ()-> assertEquals(expected.getDate(),actual.getDate()),
+                ()-> assertEquals(expected.getHypeLevel(),actual.getHypeLevel())
+        );
     }
 }

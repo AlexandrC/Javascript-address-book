@@ -48,7 +48,7 @@ public class JavaScriptFrameworkController {
 
 	@PostMapping("/save")
 	public ResponseEntity<JsFrameworkDTO> saveFramework(@Valid  @RequestBody JsFrameworkDTO jsFrameworkDTO){
-		return new ResponseEntity<>(service.createFramework(jsFrameworkDTO), HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(service.createFramework(jsFrameworkDTO), HttpStatus.CREATED);
 	}
 
 	@PutMapping("/update/{JsFwId}")
