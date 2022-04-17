@@ -3,6 +3,7 @@ package com.etnetera.hr.repository;
 import org.springframework.data.repository.CrudRepository;
 
 import com.etnetera.hr.entity.JsFrameworkEntity;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ import java.util.List;
  * @author Etnetera
  *
  */
+@Repository
 public interface JavaScriptFrameworkRepository extends CrudRepository<JsFrameworkEntity, Long> {
 
 
