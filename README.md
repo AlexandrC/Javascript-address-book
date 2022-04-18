@@ -1,4 +1,4 @@
-# etneteratest
+# JS 
 Just for fun. Learning Gradle project 
 
 Jde o jednoduchou aplikaci postavenou na Springu a RESTu, která slouží k evidenci JavaScriptových frameworků.
@@ -10,3 +10,12 @@ Dále přidej možnost vytvářet nové frameworky a upravovat ty stávající. 
 A nakonec přidej možnost mezi frameworky vyhledávat.
 Veškeré nově přidané funkce pokryj testy.
 Dokončený úkol nahraj do Git repozitáře a pošli nám na něj odkaz.
+
+
+English description
+
+Javascript Framework. REST api to collect various version of Javascript Frameworks. 
+
+Consist of name, version, deprecation date and hypeLevel. The point of the application is to save it in database. 
+1. Save and edit delete and get Frameworks
+2. Make sure that you cannot add Frameworks with the same name and version
