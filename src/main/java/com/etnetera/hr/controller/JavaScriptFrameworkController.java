@@ -48,17 +48,19 @@ public class JavaScriptFrameworkController {
 
 	@PostMapping("/save")
 	public ResponseEntity<JsFrameworkDTO> saveFramework(@Valid  @RequestBody JsFrameworkDTO jsFrameworkDTO){
-		return new ResponseEntity<>(service.createFramework(jsFrameworkDTO), HttpStatus.CREATED);
+		var	response=service.createFramework(jsFrameworkDTO);
+		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
 
-	@PutMapping("/update/{JsFwId}")
-	public JsFrameworkDTO updateFramework(@PathVariable("JsFwId") Long JsFwId, @RequestBody JsFrameworkDTO jsFrameworkDTO){
-			return service.updateFrameworkById(jsFrameworkDTO,JsFwId);
+	@PutMapping("/update/{id}")
+	public ResponseEntity<JsFrameworkDTO> updateFramework(@PathVariable("id") Long id, @RequestBody JsFrameworkDTO jsFrameworkDTO){
+			var response= service.updateFrameworkById(jsFrameworkDTO,id);
+		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
 
-	@DeleteMapping("/delete/{JsFwId}")
-	public HttpStatus deleteFramework(@PathVariable("JsFwId") Long jsFwId){
-		return service.deleteFrameworkById(jsFwId);
+	@DeleteMapping("/delete/{id}")
+	public HttpStatus deleteFramework(@PathVariable("id") Long id){
+		return service.deleteFrameworkById(id);
 	}
 
 
