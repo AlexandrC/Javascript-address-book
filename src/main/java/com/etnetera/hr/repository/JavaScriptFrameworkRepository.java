@@ -9,9 +9,8 @@ import java.util.List;
 
 /**
  * Spring data repository interface used for accessing the data in database.
- * 
- * @author Etnetera
  *
+ * @author Etnetera
  */
 @Repository
 public interface JavaScriptFrameworkRepository extends CrudRepository<JsFrameworkEntity, Long> {

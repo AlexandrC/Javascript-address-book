@@ -34,7 +34,7 @@ import java.util.List;
 
 @Transactional
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.MOCK, classes={ Application.class })
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = {Application.class})
 @AutoConfigureMockMvc
 public class JavaScriptFrameworkControllerTest {
 
@@ -68,11 +68,11 @@ public class JavaScriptFrameworkControllerTest {
     @Test
     public void itShouldCreateAJSFramework() throws Exception {
         //Given
-        JsFrameworkDTO jsFrameworkDTO = new JsFrameworkDTO("Angular","10.0.6", new Date(),1 );
+        JsFrameworkDTO jsFrameworkDTO = new JsFrameworkDTO("Angular", "10.0.6", new Date(), 1);
         //When
         when(service.createFramework(any(JsFrameworkDTO.class))).thenReturn(jsFrameworkDTO);
         //Then
-        var resultActions = mockMvc.perform( MockMvcRequestBuilders
+        var resultActions = mockMvc.perform(MockMvcRequestBuilders
                 .post("/jsframework/save")
                 .content(asJsonString(jsFrameworkDTO))
                 .contentType(MediaType.APPLICATION_JSON)
@@ -86,11 +86,11 @@ public class JavaScriptFrameworkControllerTest {
 
     @Test
     public void itShouldFindFrameworkById() throws Exception {
-        JsFrameworkDTO jsFrameworkDTO = new JsFrameworkDTO("Angular","10.0.6", new Date(),1 );
+        JsFrameworkDTO jsFrameworkDTO = new JsFrameworkDTO("Angular", "10.0.6", new Date(), 1);
         when(service.getFrameworkById(1L)).thenReturn(jsFrameworkDTO);
 
-        var getFwRequest = mockMvc.perform( MockMvcRequestBuilders
-                .get("/jsframework/getById/{id}",1L)
+        var getFwRequest = mockMvc.perform(MockMvcRequestBuilders
+                .get("/jsframework/getById/{id}", 1L)
                 .accept(MediaType.ALL_VALUE))
                 .andExpect(status().isAccepted())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -101,10 +101,10 @@ public class JavaScriptFrameworkControllerTest {
     @Test
     public void itShouldFindFrameworkByName() throws Exception {
         // Given
-        String equalJsName="Angular";
+        String equalJsName = "Angular";
         List<JsFrameworkDTO> jsFrameworkDTOList = new ArrayList<>();
-        JsFrameworkDTO jsFrameworkDTO = new JsFrameworkDTO(equalJsName,"10.0.6", new Date(),1);
-        JsFrameworkDTO jsFrameworkDTO1= new JsFrameworkDTO(equalJsName,"11", new Date(),1 );
+        JsFrameworkDTO jsFrameworkDTO = new JsFrameworkDTO(equalJsName, "10.0.6", new Date(), 1);
+        JsFrameworkDTO jsFrameworkDTO1 = new JsFrameworkDTO(equalJsName, "11", new Date(), 1);
         jsFrameworkDTOList.add(jsFrameworkDTO);
         jsFrameworkDTOList.add(jsFrameworkDTO1);
 
@@ -112,8 +112,8 @@ public class JavaScriptFrameworkControllerTest {
         // When
         when(service.getFrameworkByName(equalJsName)).thenReturn(jsFrameworkDTOList);
         //Then
-        var getFwRequest = mockMvc.perform( MockMvcRequestBuilders
-                .get("/jsframework/getByName/{name}","Angular")
+        var getFwRequest = mockMvc.perform(MockMvcRequestBuilders
+                .get("/jsframework/getByName/{name}", "Angular")
                 .accept(MediaType.ALL_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -132,8 +132,8 @@ public class JavaScriptFrameworkControllerTest {
         // When
         when(service.deleteFrameworkById(any())).thenReturn(HttpStatus.OK);
         // Then
-        var deleteReq = mockMvc.perform( MockMvcRequestBuilders
-                .delete("/jsframework/delete/{id}",1L)
+        var deleteReq = mockMvc.perform(MockMvcRequestBuilders
+                .delete("/jsframework/delete/{id}", 1L)
                 .accept(MediaType.ALL_VALUE))
                 .andExpect(status().isOk());
 
@@ -142,14 +142,14 @@ public class JavaScriptFrameworkControllerTest {
     @Test
     public void itShouldUpdateFramework() throws Exception {
         // Given
-        Long mockId=1L;
-        JsFrameworkDTO jsFrameworkDTO = new JsFrameworkDTO("Angular","10.0.6", new Date(),1 );
+        Long mockId = 1L;
+        JsFrameworkDTO jsFrameworkDTO = new JsFrameworkDTO("Angular", "10.0.6", new Date(), 1);
         //When
-        when(service.updateFrameworkById(any(JsFrameworkDTO.class),any(Long.class))).thenReturn(jsFrameworkDTO);
+        when(service.updateFrameworkById(any(JsFrameworkDTO.class), any(Long.class))).thenReturn(jsFrameworkDTO);
 
         //Then
-        var uptFwRequest = mockMvc.perform( MockMvcRequestBuilders
-                .put("/jsframework/update/{id}",mockId)
+        var uptFwRequest = mockMvc.perform(MockMvcRequestBuilders
+                .put("/jsframework/update/{id}", mockId)
                 .content(asJsonString(jsFrameworkDTO))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -159,13 +159,14 @@ public class JavaScriptFrameworkControllerTest {
 
 
     }
+
     @Test
     public void itShouldFindAllFrameworks() throws Exception {
         // Given
-        String equalJsName="Angular";
+        String equalJsName = "Angular";
         List<JsFrameworkDTO> jsFrameworkDTOList = new ArrayList<>();
-        JsFrameworkDTO jsFrameworkDTO = new JsFrameworkDTO(equalJsName,"10.0.6", new Date(),1);
-        JsFrameworkDTO jsFrameworkDTO1= new JsFrameworkDTO(equalJsName,"11", new Date(),1 );
+        JsFrameworkDTO jsFrameworkDTO = new JsFrameworkDTO(equalJsName, "10.0.6", new Date(), 1);
+        JsFrameworkDTO jsFrameworkDTO1 = new JsFrameworkDTO(equalJsName, "11", new Date(), 1);
         jsFrameworkDTOList.add(jsFrameworkDTO);
         jsFrameworkDTOList.add(jsFrameworkDTO1);
 
@@ -173,7 +174,7 @@ public class JavaScriptFrameworkControllerTest {
         // When
         when(service.getAllFrameworks()).thenReturn(jsFrameworkDTOList);
         //Then
-        var getFwRequest = mockMvc.perform( MockMvcRequestBuilders
+        var getFwRequest = mockMvc.perform(MockMvcRequestBuilders
                 .get("/jsframework/all")
                 .accept(MediaType.ALL_VALUE))
                 .andExpect(status().isOk())

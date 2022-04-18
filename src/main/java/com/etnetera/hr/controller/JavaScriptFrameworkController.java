@@ -12,9 +12,8 @@ import java.util.List;
 
 /**
  * Simple REST controller for accessing application logic.
- * 
- * @author Etnetera
  *
+ * @author Etnetera
  */
 @RestController
 @CrossOrigin(origins = "*")
@@ -22,45 +21,44 @@ import java.util.List;
 public class JavaScriptFrameworkController {
 
 
-	private final JsFrameworkServiceImpl service;
+    private final JsFrameworkServiceImpl service;
 
-	@Autowired
-	public JavaScriptFrameworkController(JsFrameworkServiceImpl service) {
-		this.service = service;
-	}
+    @Autowired
+    public JavaScriptFrameworkController(JsFrameworkServiceImpl service) {
+        this.service = service;
+    }
 
-	@GetMapping("/all")
-	public Iterable<JsFrameworkDTO> frameworks() {
-		return service.getAllFrameworks();
-	}
+    @GetMapping("/all")
+    public Iterable<JsFrameworkDTO> frameworks() {
+        return service.getAllFrameworks();
+    }
 
-	@GetMapping("/getById/{id}")
-	public ResponseEntity<JsFrameworkDTO> getFrameworkById(@PathVariable("id") Long id){
-		return new ResponseEntity<>(service.getFrameworkById(id), HttpStatus.ACCEPTED);
-	}
+    @GetMapping("/getById/{id}")
+    public ResponseEntity<JsFrameworkDTO> getFrameworkById(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(service.getFrameworkById(id), HttpStatus.ACCEPTED);
+    }
 
-	@GetMapping("/getByName/{name}")
-	public List<JsFrameworkDTO> getFrameworkByName(@PathVariable("name") String name){
-		return service.getFrameworkByName(name);
-	}
+    @GetMapping("/getByName/{name}")
+    public List<JsFrameworkDTO> getFrameworkByName(@PathVariable("name") String name) {
+        return service.getFrameworkByName(name);
+    }
 
-	@PostMapping("/save")
-	public ResponseEntity<JsFrameworkDTO> saveFramework(@Valid  @RequestBody JsFrameworkDTO jsFrameworkDTO){
-		var	response=service.createFramework(jsFrameworkDTO);
-		return new ResponseEntity<>(response, HttpStatus.CREATED);
-	}
+    @PostMapping("/save")
+    public ResponseEntity<JsFrameworkDTO> saveFramework(@Valid @RequestBody JsFrameworkDTO jsFrameworkDTO) {
+        var response = service.createFramework(jsFrameworkDTO);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
 
-	@PutMapping("/update/{id}")
-	public ResponseEntity<JsFrameworkDTO> updateFramework(@PathVariable("id") Long id, @RequestBody JsFrameworkDTO jsFrameworkDTO){
-			var response= service.updateFrameworkById(jsFrameworkDTO,id);
-		return new ResponseEntity<>(response, HttpStatus.CREATED);
-	}
+    @PutMapping("/update/{id}")
+    public ResponseEntity<JsFrameworkDTO> updateFramework(@PathVariable("id") Long id, @RequestBody JsFrameworkDTO jsFrameworkDTO) {
+        var response = service.updateFrameworkById(jsFrameworkDTO, id);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
 
-	@DeleteMapping("/delete/{id}")
-	public HttpStatus deleteFramework(@PathVariable("id") Long id){
-		return service.deleteFrameworkById(id);
-	}
-
+    @DeleteMapping("/delete/{id}")
+    public HttpStatus deleteFramework(@PathVariable("id") Long id) {
+        return service.deleteFrameworkById(id);
+    }
 
 
 }

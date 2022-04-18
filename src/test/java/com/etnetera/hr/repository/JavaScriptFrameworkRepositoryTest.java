@@ -1,7 +1,6 @@
 package com.etnetera.hr.repository;
 
 
-
 import com.etnetera.hr.entity.JsFrameworkEntity;
 
 
@@ -24,37 +23,37 @@ public class JavaScriptFrameworkRepositoryTest {
     private JavaScriptFrameworkRepository underTest;
 
     @Test
-   public void itShouldSaveJSFramework() {
+    public void itShouldSaveJSFramework() {
         //Given
-        JsFrameworkEntity entity = new JsFrameworkEntity(1L,"Angular","10.5",null,null);
+        JsFrameworkEntity entity = new JsFrameworkEntity(1L, "Angular", "10.5", null, null);
         //When
         var actualSaveJSFramework = underTest.save(entity);
         //Then
-         var optionalJsFrameworkEntity= underTest.findById(1L);
-            assertThat(optionalJsFrameworkEntity).isPresent()
-                    .hasValueSatisfying(jsFrameworkEntity ->
+        var optionalJsFrameworkEntity = underTest.findById(1L);
+        assertThat(optionalJsFrameworkEntity).isPresent()
+                .hasValueSatisfying(jsFrameworkEntity ->
                         assertThat(jsFrameworkEntity.getId()).isEqualTo(entity.getId()))
-                    .hasValueSatisfying(jsFrameworkEntity ->
-                            assertThat(jsFrameworkEntity.getName()).isEqualTo(entity.getName()));
+                .hasValueSatisfying(jsFrameworkEntity ->
+                        assertThat(jsFrameworkEntity.getName()).isEqualTo(entity.getName()));
 
     }
 
     @Test
     public void itShouldFindAllByName() {
         //Given
-        JsFrameworkEntity entity = new JsFrameworkEntity(1L,"Angular","10.5",null,null);
-        JsFrameworkEntity entity2 = new JsFrameworkEntity(2L,"Angular","10.4",null,null);
-        JsFrameworkEntity entity3 = new JsFrameworkEntity(3L,"React","10.4",null,null);
+        JsFrameworkEntity entity = new JsFrameworkEntity(1L, "Angular", "10.5", null, null);
+        JsFrameworkEntity entity2 = new JsFrameworkEntity(2L, "Angular", "10.4", null, null);
+        JsFrameworkEntity entity3 = new JsFrameworkEntity(3L, "React", "10.4", null, null);
         //When
         underTest.save(entity);
         underTest.save(entity2);
         underTest.save(entity3);
         //Then
-        var optionalJsFrameworkEntity= underTest.findAllByName(entity.getName());
+        var optionalJsFrameworkEntity = underTest.findAllByName(entity.getName());
         Assertions.assertThat(optionalJsFrameworkEntity)
                 .hasSize(2)
                 .extracting(JsFrameworkEntity::getName)
-                .containsExactlyInAnyOrder("Angular","Angular");
+                .containsExactlyInAnyOrder("Angular", "Angular");
 
     }
 }
