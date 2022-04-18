@@ -2,23 +2,16 @@ package com.etnetera.hr.controller;
 
 import com.etnetera.hr.Application;
 import com.etnetera.hr.dto.JsFrameworkDTO;
-import com.etnetera.hr.entity.JsFrameworkEntity;
-import com.etnetera.hr.exceptions.JSDuplicate;
 import com.etnetera.hr.repository.JavaScriptFrameworkRepository;
-import com.etnetera.hr.service.JavaScriptService;
+import com.etnetera.hr.service.JsFrameworkServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
@@ -26,7 +19,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -42,7 +34,7 @@ import java.util.List;
 
 @Transactional
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.MOCK, classes={ Application.class })
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = {Application.class})
 @AutoConfigureMockMvc
 public class JavaScriptFrameworkControllerTest {
 
@@ -52,7 +44,7 @@ public class JavaScriptFrameworkControllerTest {
     private WebApplicationContext webApplicationContext;
 
     @MockBean
-    private JavaScriptService service;
+    private JsFrameworkServiceImpl service;
 
     @Mock
     JavaScriptFrameworkRepository repository;
@@ -76,11 +68,11 @@ public class JavaScriptFrameworkControllerTest {
     @Test
     public void itShouldCreateAJSFramework() throws Exception {
         //Given
-        JsFrameworkDTO jsFrameworkDTO = new JsFrameworkDTO("Angular","10.0.6", new Date(),1 );
+        JsFrameworkDTO jsFrameworkDTO = new JsFrameworkDTO("Angular", "10.0.6", new Date(), 1);
         //When
         when(service.createFramework(any(JsFrameworkDTO.class))).thenReturn(jsFrameworkDTO);
         //Then
-        var resultActions = mockMvc.perform( MockMvcRequestBuilders
+        var resultActions = mockMvc.perform(MockMvcRequestBuilders
                 .post("/jsframework/save")
                 .content(asJsonString(jsFrameworkDTO))
                 .contentType(MediaType.APPLICATION_JSON)
@@ -94,11 +86,11 @@ public class JavaScriptFrameworkControllerTest {
 
     @Test
     public void itShouldFindFrameworkById() throws Exception {
-        JsFrameworkDTO jsFrameworkDTO = new JsFrameworkDTO("Angular","10.0.6", new Date(),1 );
+        JsFrameworkDTO jsFrameworkDTO = new JsFrameworkDTO("Angular", "10.0.6", new Date(), 1);
         when(service.getFrameworkById(1L)).thenReturn(jsFrameworkDTO);
 
-        var getFwRequest = mockMvc.perform( MockMvcRequestBuilders
-                .get("/jsframework/getById/{id}",1L)
+        var getFwRequest = mockMvc.perform(MockMvcRequestBuilders
+                .get("/jsframework/getById/{id}", 1L)
                 .accept(MediaType.ALL_VALUE))
                 .andExpect(status().isAccepted())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -109,10 +101,10 @@ public class JavaScriptFrameworkControllerTest {
     @Test
     public void itShouldFindFrameworkByName() throws Exception {
         // Given
-        String equalJsName="Angular";
+        String equalJsName = "Angular";
         List<JsFrameworkDTO> jsFrameworkDTOList = new ArrayList<>();
-        JsFrameworkDTO jsFrameworkDTO = new JsFrameworkDTO(equalJsName,"10.0.6", new Date(),1);
-        JsFrameworkDTO jsFrameworkDTO1= new JsFrameworkDTO(equalJsName,"11", new Date(),1 );
+        JsFrameworkDTO jsFrameworkDTO = new JsFrameworkDTO(equalJsName, "10.0.6", new Date(), 1);
+        JsFrameworkDTO jsFrameworkDTO1 = new JsFrameworkDTO(equalJsName, "11", new Date(), 1);
         jsFrameworkDTOList.add(jsFrameworkDTO);
         jsFrameworkDTOList.add(jsFrameworkDTO1);
 
@@ -120,8 +112,8 @@ public class JavaScriptFrameworkControllerTest {
         // When
         when(service.getFrameworkByName(equalJsName)).thenReturn(jsFrameworkDTOList);
         //Then
-        var getFwRequest = mockMvc.perform( MockMvcRequestBuilders
-                .get("/jsframework/getByName/{name}","Angular")
+        var getFwRequest = mockMvc.perform(MockMvcRequestBuilders
+                .get("/jsframework/getByName/{name}", "Angular")
                 .accept(MediaType.ALL_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -140,8 +132,8 @@ public class JavaScriptFrameworkControllerTest {
         // When
         when(service.deleteFrameworkById(any())).thenReturn(HttpStatus.OK);
         // Then
-        var deleteReq = mockMvc.perform( MockMvcRequestBuilders
-                .delete("/jsframework/delete/{id}",1L)
+        var deleteReq = mockMvc.perform(MockMvcRequestBuilders
+                .delete("/jsframework/delete/{id}", 1L)
                 .accept(MediaType.ALL_VALUE))
                 .andExpect(status().isOk());
 
@@ -150,14 +142,14 @@ public class JavaScriptFrameworkControllerTest {
     @Test
     public void itShouldUpdateFramework() throws Exception {
         // Given
-        Long mockId=1L;
-        JsFrameworkDTO jsFrameworkDTO = new JsFrameworkDTO("Angular","10.0.6", new Date(),1 );
+        Long mockId = 1L;
+        JsFrameworkDTO jsFrameworkDTO = new JsFrameworkDTO("Angular", "10.0.6", new Date(), 1);
         //When
-        when(service.updateFrameworkById(any(JsFrameworkDTO.class),any(Long.class))).thenReturn(jsFrameworkDTO);
+        when(service.updateFrameworkById(any(JsFrameworkDTO.class), any(Long.class))).thenReturn(jsFrameworkDTO);
 
         //Then
-        var uptFwRequest = mockMvc.perform( MockMvcRequestBuilders
-                .put("/jsframework/update/{id}",mockId)
+        var uptFwRequest = mockMvc.perform(MockMvcRequestBuilders
+                .put("/jsframework/update/{id}", mockId)
                 .content(asJsonString(jsFrameworkDTO))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -167,13 +159,14 @@ public class JavaScriptFrameworkControllerTest {
 
 
     }
+
     @Test
     public void itShouldFindAllFrameworks() throws Exception {
         // Given
-        String equalJsName="Angular";
+        String equalJsName = "Angular";
         List<JsFrameworkDTO> jsFrameworkDTOList = new ArrayList<>();
-        JsFrameworkDTO jsFrameworkDTO = new JsFrameworkDTO(equalJsName,"10.0.6", new Date(),1);
-        JsFrameworkDTO jsFrameworkDTO1= new JsFrameworkDTO(equalJsName,"11", new Date(),1 );
+        JsFrameworkDTO jsFrameworkDTO = new JsFrameworkDTO(equalJsName, "10.0.6", new Date(), 1);
+        JsFrameworkDTO jsFrameworkDTO1 = new JsFrameworkDTO(equalJsName, "11", new Date(), 1);
         jsFrameworkDTOList.add(jsFrameworkDTO);
         jsFrameworkDTOList.add(jsFrameworkDTO1);
 
@@ -181,7 +174,7 @@ public class JavaScriptFrameworkControllerTest {
         // When
         when(service.getAllFrameworks()).thenReturn(jsFrameworkDTOList);
         //Then
-        var getFwRequest = mockMvc.perform( MockMvcRequestBuilders
+        var getFwRequest = mockMvc.perform(MockMvcRequestBuilders
                 .get("/jsframework/all")
                 .accept(MediaType.ALL_VALUE))
                 .andExpect(status().isOk())
