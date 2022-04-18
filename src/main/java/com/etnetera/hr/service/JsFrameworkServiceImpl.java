@@ -15,13 +15,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class JavaScriptService {
+public class JsFrameworkServiceImpl implements JavaScriptServiceInterface {
 
     public final JavaScriptFrameworkRepository repository;
 
 
     @Autowired
-    public JavaScriptService(JavaScriptFrameworkRepository repository) {
+    public JsFrameworkServiceImpl(JavaScriptFrameworkRepository repository) {
         this.repository = repository;
     }
 

@@ -1,13 +1,11 @@
 package com.etnetera.hr.controller;
 
 import com.etnetera.hr.dto.JsFrameworkDTO;
-import com.etnetera.hr.service.JavaScriptService;
+import com.etnetera.hr.service.JsFrameworkServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import com.etnetera.hr.entity.JsFrameworkEntity;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -24,10 +22,10 @@ import java.util.List;
 public class JavaScriptFrameworkController {
 
 
-	private final JavaScriptService service;
+	private final JsFrameworkServiceImpl service;
 
 	@Autowired
-	public JavaScriptFrameworkController(JavaScriptService service) {
+	public JavaScriptFrameworkController(JsFrameworkServiceImpl service) {
 		this.service = service;
 	}
 

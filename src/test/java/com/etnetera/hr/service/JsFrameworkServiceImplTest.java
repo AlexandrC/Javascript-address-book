@@ -1,6 +1,5 @@
 package com.etnetera.hr.service;
 
-import com.etnetera.hr.config.SingletonModelMapper;
 import com.etnetera.hr.dto.JsFrameworkDTO;
 import com.etnetera.hr.entity.JsFrameworkEntity;
 import com.etnetera.hr.exceptions.JSDuplicate;
@@ -22,12 +21,12 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 @DisplayName("Javascript service tests")
-public class JavaScriptServiceTest {
+public class JsFrameworkServiceImplTest {
 
 
     @Mock
     JavaScriptFrameworkRepository repository;
-    private  JavaScriptService underTest;
+    private JsFrameworkServiceImpl underTest;
     private ModelMapper modelMapper;
 
 
@@ -36,7 +35,7 @@ public class JavaScriptServiceTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-         underTest = new JavaScriptService(repository);
+         underTest = new JsFrameworkServiceImpl(repository);
          modelMapper = new ModelMapper();
     }
 

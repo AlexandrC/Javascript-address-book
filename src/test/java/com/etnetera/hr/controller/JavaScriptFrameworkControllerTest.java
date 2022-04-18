@@ -2,23 +2,16 @@ package com.etnetera.hr.controller;
 
 import com.etnetera.hr.Application;
 import com.etnetera.hr.dto.JsFrameworkDTO;
-import com.etnetera.hr.entity.JsFrameworkEntity;
-import com.etnetera.hr.exceptions.JSDuplicate;
 import com.etnetera.hr.repository.JavaScriptFrameworkRepository;
-import com.etnetera.hr.service.JavaScriptService;
+import com.etnetera.hr.service.JsFrameworkServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
@@ -26,7 +19,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -52,7 +44,7 @@ public class JavaScriptFrameworkControllerTest {
     private WebApplicationContext webApplicationContext;
 
     @MockBean
-    private JavaScriptService service;
+    private JsFrameworkServiceImpl service;
 
     @Mock
     JavaScriptFrameworkRepository repository;
