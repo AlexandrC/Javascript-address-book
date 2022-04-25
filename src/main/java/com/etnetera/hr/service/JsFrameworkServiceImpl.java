@@ -64,12 +64,21 @@ public class JsFrameworkServiceImpl implements JavaScriptServiceInterface {
     public JsFrameworkDTO updateFrameworkById(JsFrameworkDTO jsFrameworkDTO, Long JsFwId) {
         ModelMapper modelMapper = SingletonModelMapper.getInstance();
         JsFrameworkEntity jsFrameworkEntity = repository.findById(JsFwId).orElseThrow(() -> new RuntimeException("Javascript framework was not found"));
-        jsFrameworkEntity.setName(jsFrameworkDTO.getName());
-        jsFrameworkEntity.setDate(jsFrameworkDTO.getDate());
-        jsFrameworkEntity.setVersion(jsFrameworkDTO.getVersion());
-        jsFrameworkEntity.setHypeLevel(jsFrameworkDTO.getHypeLevel());
-        repository.save(jsFrameworkEntity);
-        return modelMapper.map(jsFrameworkEntity, JsFrameworkDTO.class);
+        if (checkIfNameAndVersion(jsFrameworkDTO.getName(), jsFrameworkDTO.getVersion())){
+            jsFrameworkEntity.setName(jsFrameworkDTO.getName());
+            jsFrameworkEntity.setDate(jsFrameworkDTO.getDate());
+            jsFrameworkEntity.setVersion(jsFrameworkDTO.getVersion());
+            jsFrameworkEntity.setHypeLevel(jsFrameworkDTO.getHypeLevel());
+            repository.save(jsFrameworkEntity);
+            return modelMapper.map(jsFrameworkEntity, JsFrameworkDTO.class);
+        }
+        else {
+            throw new RuntimeException("Conflict");
+        }
+    }
+
+    private boolean checkIfNameAndVersion(String name, String version){
+        return true;
     }
 
     public boolean deleteFrameworkById(Long id) {

@@ -26,12 +26,11 @@ public class JsFrameworkServiceImplTest {
 
 
     @Mock
-    JavaScriptFrameworkRepository repository;
+    private JavaScriptFrameworkRepository repository;
     private JsFrameworkServiceImpl underTest;
     private ModelMapper modelMapper;
 
 
-    @Before
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);

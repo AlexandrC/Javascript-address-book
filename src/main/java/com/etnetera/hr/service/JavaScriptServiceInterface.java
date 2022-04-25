@@ -11,7 +11,7 @@ public interface JavaScriptServiceInterface  {
 
     public JsFrameworkDTO getFrameworkById(Long id);
 
-    public List<JsFrameworkDTO> getFrameworkByName(String name);
+    List<JsFrameworkDTO> getFrameworkByName(String name);
 
     public List<JsFrameworkDTO> getAllFrameworks();
 
