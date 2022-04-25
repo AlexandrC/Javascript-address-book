@@ -39,7 +39,6 @@ public class JsFrameworkEntity {
     @Column
     private Integer hypeLevel;
 
-
     @Override
     public String toString() {
         return "JavaScriptFramework [id=" + id + ", name=" + name + "]";

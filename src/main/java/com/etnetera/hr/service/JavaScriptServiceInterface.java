@@ -7,15 +7,15 @@ import java.util.List;
 
 public interface JavaScriptServiceInterface  {
 
-    public JsFrameworkDTO createFramework(JsFrameworkDTO jsFrameworkDTO);
+     JsFrameworkDTO createFramework(JsFrameworkDTO jsFrameworkDTO);
 
-    public JsFrameworkDTO getFrameworkById(Long id);
+     JsFrameworkDTO getFrameworkById(Long id);
 
     List<JsFrameworkDTO> getFrameworkByName(String name);
 
-    public List<JsFrameworkDTO> getAllFrameworks();
+     List<JsFrameworkDTO> getAllFrameworks();
 
-    public JsFrameworkDTO updateFrameworkById(JsFrameworkDTO jsFrameworkDTO, Long JsFwId);
+     JsFrameworkDTO updateFrameworkById(JsFrameworkDTO jsFrameworkDTO, Long JsFwId);
 
-    public boolean deleteFrameworkById(Long id);
+     boolean deleteFrameworkById(Long id);
 }
