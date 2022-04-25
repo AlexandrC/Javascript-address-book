@@ -14,7 +14,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {JSDuplicate.class})
     public ResponseEntity<ErrorMessage> handleJSDuplicateException(RuntimeException ex){
-        ErrorMessage errorMessage = new ErrorMessage("No connection to webserver", ex.getMessage(), 409);
+        ErrorMessage errorMessage = new ErrorMessage(ex.getMessage(), ex.getMessage(), 409);
         return new ResponseEntity<>(errorMessage, HttpStatus.CONFLICT);
     }
 

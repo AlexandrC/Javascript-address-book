@@ -45,7 +45,7 @@ public class JsFrameworkServiceImplTest {
     public void itShouldSaveJavaScriptFramework() {
         // Given
         Date expectedDate = new Date();
-        JsFrameworkDTO expectedjsFrameworkDTO = new JsFrameworkDTO("Angular",
+        JsFrameworkDTO expectedjsFrameworkDTO = new JsFrameworkDTO(1L,"Angular",
                 "10.1",
                 expectedDate,
                 1);
@@ -69,7 +69,7 @@ public class JsFrameworkServiceImplTest {
     public void itShouldThrowDuplicateExceptionWhenSaveFramework() {
 
         Date expectedDate = new Date();
-        JsFrameworkDTO jsFrameworkDTO = new JsFrameworkDTO("Angular",
+        JsFrameworkDTO jsFrameworkDTO = new JsFrameworkDTO(1L,"Angular",
                 "10.1",
                 expectedDate,
                 1);
@@ -79,8 +79,9 @@ public class JsFrameworkServiceImplTest {
         Mockito.when(repository.findFirstByNameAndVersion(jsFrameworkDTO.getName(), jsFrameworkDTO.getVersion())).thenReturn(expectedEntity);
 
         // Then
-        assertThrows(JSDuplicate.class, () -> underTest.createFramework(jsFrameworkDTO),
-                "Javascript framework with the same name and version already exist");
+         var assertThrows= assertThrows(JSDuplicate.class, () -> underTest.createFramework(jsFrameworkDTO), "Js");
+         assertEquals(assertThrows.getMessage(),"Javascript framework with the same name : "+  jsFrameworkDTO.getName()
+                 + " and version " + jsFrameworkDTO.getVersion()+ "already exist");
     }
 
 //    }
@@ -90,7 +91,7 @@ public class JsFrameworkServiceImplTest {
     public void itShouldUpdateFw() {
         // Given
         Date expectedDate = new Date();
-        JsFrameworkDTO expectedJsFrameworkDTO = new JsFrameworkDTO("updateName", "10.5", expectedDate, 5);
+        JsFrameworkDTO expectedJsFrameworkDTO = new JsFrameworkDTO(1L,"updateName", "10.5", expectedDate, 5);
         JsFrameworkEntity mockEntity = new JsFrameworkEntity(1L,
                 "Angular",
                 "10.1",
@@ -136,7 +137,7 @@ public class JsFrameworkServiceImplTest {
     @Test
     public void itShouldDeleteFw() {
         // Given
-        HttpStatus expectedStatus = HttpStatus.OK;
+        var expectedReturn = true;
         JsFrameworkEntity mockEntity = new JsFrameworkEntity(1L,
                 "Angular",
                 "10.1",
@@ -144,9 +145,9 @@ public class JsFrameworkServiceImplTest {
                 2);
         // When
         Mockito.when(repository.findById(mockEntity.getId())).thenReturn(java.util.Optional.of(mockEntity));
-        var actualHTPSStatus = underTest.deleteFrameworkById(mockEntity.getId());
+        var actualReturn = underTest.deleteFrameworkById(mockEntity.getId());
         // Then
-        assertEquals(actualHTPSStatus, expectedStatus);
+        assertEquals(expectedReturn, actualReturn);
     }
 
     @Test
@@ -155,10 +156,10 @@ public class JsFrameworkServiceImplTest {
 
         // When
 
-        var expectedStatus = HttpStatus.NOT_FOUND;
-        var actualHTPSStatus = underTest.deleteFrameworkById(1L);
+        var expectedReturn = false;
+        var actualReturn = underTest.deleteFrameworkById(1L);
         // Then
-        assertEquals(actualHTPSStatus, expectedStatus);
+        assertEquals(expectedReturn, actualReturn);
     }
 
 

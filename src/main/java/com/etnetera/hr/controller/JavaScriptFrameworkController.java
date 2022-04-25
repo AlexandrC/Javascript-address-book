@@ -52,12 +52,17 @@ public class JavaScriptFrameworkController {
     @PutMapping("/update/{id}")
     public ResponseEntity<JsFrameworkDTO> updateFramework(@PathVariable("id") Long id, @RequestBody JsFrameworkDTO jsFrameworkDTO) {
         var response = service.updateFrameworkById(jsFrameworkDTO, id);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/delete/{id}")
-    public HttpStatus deleteFramework(@PathVariable("id") Long id) {
-        return service.deleteFrameworkById(id);
+    public ResponseEntity<HttpStatus>  deleteFramework(@PathVariable("id") Long id) {
+        if (service.deleteFrameworkById(id)){
+            return new ResponseEntity<>(HttpStatus.OK) ;
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 

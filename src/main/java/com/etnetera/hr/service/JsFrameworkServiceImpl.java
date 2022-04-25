@@ -34,8 +34,10 @@ public class JsFrameworkServiceImpl implements JavaScriptServiceInterface {
             var returnEntity = repository.save(jsEntity);
             return modelMapper.map(returnEntity, JsFrameworkDTO.class);
         } else {
-            throw new JSDuplicate("Javascript framework with the same name and version already exist");
+            throw new JSDuplicate("Javascript framework with the same name : "+  jsFrameworkDTO.getName()
+                    + " and version " + jsFrameworkDTO.getVersion()+ "already exist");
         }
+
     }
 
     public JsFrameworkDTO getFrameworkById(Long id) {
@@ -70,14 +72,14 @@ public class JsFrameworkServiceImpl implements JavaScriptServiceInterface {
         return modelMapper.map(jsFrameworkEntity, JsFrameworkDTO.class);
     }
 
-    public HttpStatus deleteFrameworkById(Long id) {
+    public boolean deleteFrameworkById(Long id) {
 
         Optional<JsFrameworkEntity> jsFrameworkEntity = repository.findById(id);
         if (jsFrameworkEntity.isPresent()) {
             repository.deleteById(id);
-            return HttpStatus.OK;
+            return true;
         }
-        return HttpStatus.NOT_FOUND;
+        return false;
     }
 
 
