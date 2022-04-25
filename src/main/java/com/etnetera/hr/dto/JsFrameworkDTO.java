@@ -10,6 +10,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class JsFrameworkDTO {
 
+    private Long id;
     private String name;
     private String version;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)

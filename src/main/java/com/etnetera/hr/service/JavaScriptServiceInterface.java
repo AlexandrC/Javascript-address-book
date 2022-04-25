@@ -17,5 +17,5 @@ public interface JavaScriptServiceInterface  {
 
     public JsFrameworkDTO updateFrameworkById(JsFrameworkDTO jsFrameworkDTO, Long JsFwId);
 
-    public HttpStatus deleteFrameworkById(Long id);
+    public boolean deleteFrameworkById(Long id);
 }

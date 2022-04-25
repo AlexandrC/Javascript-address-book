@@ -68,7 +68,7 @@ public class JavaScriptFrameworkControllerTest {
     @Test
     public void itShouldCreateAJSFramework() throws Exception {
         //Given
-        JsFrameworkDTO jsFrameworkDTO = new JsFrameworkDTO("Angular", "10.0.6", new Date(), 1);
+        JsFrameworkDTO jsFrameworkDTO = new JsFrameworkDTO(1L,"Angular", "10.0.6", new Date(), 1);
         //When
         when(service.createFramework(any(JsFrameworkDTO.class))).thenReturn(jsFrameworkDTO);
         //Then
@@ -86,7 +86,7 @@ public class JavaScriptFrameworkControllerTest {
 
     @Test
     public void itShouldFindFrameworkById() throws Exception {
-        JsFrameworkDTO jsFrameworkDTO = new JsFrameworkDTO("Angular", "10.0.6", new Date(), 1);
+        JsFrameworkDTO jsFrameworkDTO = new JsFrameworkDTO(1L,"Angular", "10.0.6", new Date(), 1);
         when(service.getFrameworkById(1L)).thenReturn(jsFrameworkDTO);
 
         var getFwRequest = mockMvc.perform(MockMvcRequestBuilders
@@ -103,8 +103,8 @@ public class JavaScriptFrameworkControllerTest {
         // Given
         String equalJsName = "Angular";
         List<JsFrameworkDTO> jsFrameworkDTOList = new ArrayList<>();
-        JsFrameworkDTO jsFrameworkDTO = new JsFrameworkDTO(equalJsName, "10.0.6", new Date(), 1);
-        JsFrameworkDTO jsFrameworkDTO1 = new JsFrameworkDTO(equalJsName, "11", new Date(), 1);
+        JsFrameworkDTO jsFrameworkDTO = new JsFrameworkDTO(1L,equalJsName, "10.0.6", new Date(), 1);
+        JsFrameworkDTO jsFrameworkDTO1 = new JsFrameworkDTO(1L,equalJsName, "11", new Date(), 1);
         jsFrameworkDTOList.add(jsFrameworkDTO);
         jsFrameworkDTOList.add(jsFrameworkDTO1);
 
@@ -130,12 +130,13 @@ public class JavaScriptFrameworkControllerTest {
         // Given
 
         // When
-        when(service.deleteFrameworkById(any())).thenReturn(HttpStatus.OK);
+        when(service.deleteFrameworkById(any())).thenReturn(true);
         // Then
         var deleteReq = mockMvc.perform(MockMvcRequestBuilders
                 .delete("/jsframework/delete/{id}", 1L)
                 .accept(MediaType.ALL_VALUE))
                 .andExpect(status().isOk());
+
 
     }
 
@@ -143,7 +144,7 @@ public class JavaScriptFrameworkControllerTest {
     public void itShouldUpdateFramework() throws Exception {
         // Given
         Long mockId = 1L;
-        JsFrameworkDTO jsFrameworkDTO = new JsFrameworkDTO("Angular", "10.0.6", new Date(), 1);
+        JsFrameworkDTO jsFrameworkDTO = new JsFrameworkDTO(1L,"Angular", "10.0.6", new Date(), 1);
         //When
         when(service.updateFrameworkById(any(JsFrameworkDTO.class), any(Long.class))).thenReturn(jsFrameworkDTO);
 
@@ -153,7 +154,7 @@ public class JavaScriptFrameworkControllerTest {
                 .content(asJsonString(jsFrameworkDTO))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
+                .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.name").value(jsFrameworkDTO.getName()))
                 .andExpect(jsonPath("$.version").value(jsFrameworkDTO.getVersion()));
 
@@ -165,8 +166,8 @@ public class JavaScriptFrameworkControllerTest {
         // Given
         String equalJsName = "Angular";
         List<JsFrameworkDTO> jsFrameworkDTOList = new ArrayList<>();
-        JsFrameworkDTO jsFrameworkDTO = new JsFrameworkDTO(equalJsName, "10.0.6", new Date(), 1);
-        JsFrameworkDTO jsFrameworkDTO1 = new JsFrameworkDTO(equalJsName, "11", new Date(), 1);
+        JsFrameworkDTO jsFrameworkDTO = new JsFrameworkDTO(1L,equalJsName, "10.0.6", new Date(), 1);
+        JsFrameworkDTO jsFrameworkDTO1 = new JsFrameworkDTO(1L,equalJsName, "11", new Date(), 1);
         jsFrameworkDTOList.add(jsFrameworkDTO);
         jsFrameworkDTOList.add(jsFrameworkDTO1);
 
