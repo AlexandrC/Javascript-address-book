@@ -1,6 +1,5 @@
 package com.etnetera.hr.service;
 
-import com.etnetera.hr.config.SingletonModelMapper;
 import com.etnetera.hr.dto.JsFrameworkDTO;
 import com.etnetera.hr.entity.JsFrameworkEntity;
 import com.etnetera.hr.exceptions.JSDuplicate;
@@ -8,7 +7,6 @@ import com.etnetera.hr.repository.JavaScriptFrameworkRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +17,9 @@ public class JsFrameworkServiceImpl implements JavaScriptServiceInterface {
 
     public final JavaScriptFrameworkRepository repository;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
 
     @Autowired
     public JsFrameworkServiceImpl(JavaScriptFrameworkRepository repository) {
@@ -27,7 +28,6 @@ public class JsFrameworkServiceImpl implements JavaScriptServiceInterface {
 
 
     public JsFrameworkDTO createFramework(JsFrameworkDTO jsFrameworkDTO) throws JSDuplicate {
-        ModelMapper modelMapper = SingletonModelMapper.getInstance();
         JsFrameworkEntity jsEntity = modelMapper.map(jsFrameworkDTO, JsFrameworkEntity.class);
         var collect = repository.findFirstByNameAndVersion(jsEntity.getName(), jsEntity.getVersion());
         if (collect == null) {
@@ -42,34 +42,39 @@ public class JsFrameworkServiceImpl implements JavaScriptServiceInterface {
 
     public JsFrameworkDTO getFrameworkById(Long id) {
         var jsFrameworkEntity = repository.findById(id).orElseThrow(() -> new RuntimeException("Javascript framework was not found"));
-        ModelMapper modelMapper = SingletonModelMapper.getInstance();
         return modelMapper.map(jsFrameworkEntity, JsFrameworkDTO.class);
 
     }
 
     public List<JsFrameworkDTO> getFrameworkByName(String name) {
         var jsFrameworkEntities = repository.findAllByName(name);
-        ModelMapper modelMapper = SingletonModelMapper.getInstance();
         return modelMapper.map(jsFrameworkEntities, new TypeToken<Iterable<JsFrameworkDTO>>() {
         }.getType());
     }
 
     public List<JsFrameworkDTO> getAllFrameworks() {
         Iterable<JsFrameworkEntity> entities = repository.findAll();
-        ModelMapper modelMapper = SingletonModelMapper.getInstance();
         return modelMapper.map(entities, new TypeToken<Iterable<JsFrameworkDTO>>() {
         }.getType());
     }
 
     public JsFrameworkDTO updateFrameworkById(JsFrameworkDTO jsFrameworkDTO, Long JsFwId) {
-        ModelMapper modelMapper = SingletonModelMapper.getInstance();
         JsFrameworkEntity jsFrameworkEntity = repository.findById(JsFwId).orElseThrow(() -> new RuntimeException("Javascript framework was not found"));
-        jsFrameworkEntity.setName(jsFrameworkDTO.getName());
-        jsFrameworkEntity.setDate(jsFrameworkDTO.getDate());
-        jsFrameworkEntity.setVersion(jsFrameworkDTO.getVersion());
-        jsFrameworkEntity.setHypeLevel(jsFrameworkDTO.getHypeLevel());
-        repository.save(jsFrameworkEntity);
-        return modelMapper.map(jsFrameworkEntity, JsFrameworkDTO.class);
+        if (checkIfNameAndVersion(jsFrameworkDTO.getName(), jsFrameworkDTO.getVersion())){
+            jsFrameworkEntity.setName(jsFrameworkDTO.getName());
+            jsFrameworkEntity.setDate(jsFrameworkDTO.getDate());
+            jsFrameworkEntity.setVersion(jsFrameworkDTO.getVersion());
+            jsFrameworkEntity.setHypeLevel(jsFrameworkDTO.getHypeLevel());
+            repository.save(jsFrameworkEntity);
+            return modelMapper.map(jsFrameworkEntity, JsFrameworkDTO.class);
+        }
+        else {
+            throw new RuntimeException("Conflict");
+        }
+    }
+
+    private boolean checkIfNameAndVersion(String name, String version){
+        return true;
     }
 
     public boolean deleteFrameworkById(Long id) {

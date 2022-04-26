@@ -1,6 +1,7 @@
 package com.etnetera.hr.controller;
 
 import com.etnetera.hr.dto.JsFrameworkDTO;
+import com.etnetera.hr.service.JavaScriptServiceInterface;
 import com.etnetera.hr.service.JsFrameworkServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,11 +22,11 @@ import java.util.List;
 public class JavaScriptFrameworkController {
 
 
-    private final JsFrameworkServiceImpl service;
+    private final JavaScriptServiceInterface service;
 
     @Autowired
-    public JavaScriptFrameworkController(JsFrameworkServiceImpl service) {
-        this.service = service;
+    public JavaScriptFrameworkController(JavaScriptServiceInterface serviceInterface) {
+        this.service = serviceInterface;
     }
 
     @GetMapping("/all")
