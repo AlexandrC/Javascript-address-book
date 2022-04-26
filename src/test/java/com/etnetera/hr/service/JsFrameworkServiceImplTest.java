@@ -8,33 +8,41 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+@RunWith(SpringRunner.class)
+@SpringBootTest
 @DisplayName("Javascript service tests")
 public class JsFrameworkServiceImplTest {
 
 
-    @Mock
+    @MockBean
     private JavaScriptFrameworkRepository repository;
-    private JsFrameworkServiceImpl underTest;
     private ModelMapper modelMapper;
 
+    @Autowired
+    JsFrameworkServiceImpl underTest;
 
-    @BeforeEach
+
+    @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
-        underTest = new JsFrameworkServiceImpl(repository);
+       // MockitoAnnotations.initMocks(this);
         modelMapper = new ModelMapper();
     }
 
